@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { UsersService } from '../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
+import { User } from '../model/user.model';
+import { ApiResponse } from '../../common/response/ApiResponse';
 
 @Controller('users')
 export class UsersController {
@@ -12,8 +14,13 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll(): Promise<ApiResponse<User[]>> {
+    try {
+      const users: User[] = await this.usersService.findAll();
+      return ApiResponse.success(users);
+    } catch (error) {
+      return ApiResponse.error(400, error.message);
+    }
   }
 
   @Get(':id')
