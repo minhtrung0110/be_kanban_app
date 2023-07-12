@@ -25,7 +25,7 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto {
-  @IsNotEmpty() _id: number;
+  @IsNotEmpty() _id: string;
   first_name: string;
   last_name: string;
   birth_day: string;
