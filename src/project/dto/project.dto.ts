@@ -11,7 +11,7 @@ export class CreateProjectDto {
 
 export class UpdateProjectDto {
   @IsNotEmpty()
-  id: number;
+  id: string;
   name: string;
   description: string;
   status: number;

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ProjectsService } from '../services/project.service';
 import { CreateProjectDto, UpdateProjectDto } from '../dto/project.dto';
 import { ApiResponse } from '../../common/response/ApiResponse';
@@ -19,30 +19,34 @@ export class ProjectsController {
       const result: Project[] = await this.projectsService.findAll();
       return ApiResponse.success(result);
     } catch (error) {
-      return ApiResponse.error(400, error.message);
+      return ApiResponse.error(HttpStatus.BAD_REQUEST, error.message);
     }
   }
 
   // @Get(':id')
-  // getPostById(@Param('id') id: string) {
-  //   console.log(this.projectsService.getProjectById(id));
-  //   return this.projectsService.getProjectById(id);
+  // async getPostById(@Param('id') id: string) {
+  //   try {
+  //     const result: Project[] = await this.projectsService.getProjectById(id);
+  //     return ApiResponse.success(result);
+  //   } catch (error) {
+  //     return ApiResponse.error(HttpStatus.FORBIDDEN, error.message);
+  //   }
   // }
 
-  @Get(':id')
-  async getPostById(@Param('id') id: string) {
-    try {
-      const result: Project = await this.projectsService.getProjectById(id);
-      console.log('Result:', this.projectsService.getProjectById(id));
-      return ApiResponse.success(result);
-    } catch (error) {
-      return ApiResponse.error(400, error.message);
-    }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     await this.projectsService.updateProject(id, updateProjectDto);
+  }
+
+  @Get(':id')
+  async getFullDataProject(@Param('id') id: string) {
+    try {
+      const result = await this.projectsService.getFullData(id);
+      // const listColumn: Column[] = await this.columnsService.findByProjectId(id);
+      //  const data: ProjectAPI = { ...result, board_columns: listColumn };
+      return ApiResponse.success(result);
+    } catch (error) {
+      return ApiResponse.error(HttpStatus.FORBIDDEN, error.message);
+    }
   }
 }

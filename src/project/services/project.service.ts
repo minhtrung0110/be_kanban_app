@@ -12,7 +12,16 @@ export class ProjectsService {
   }
 
   async getProjectById(project_id: string) {
-    const project = this.projectRepository.findProjectById(project_id);
+    const project = this.projectRepository.findFullDataById(project_id);
+    if (project) {
+      //await project;
+      return project;
+    }
+    throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
+  }
+
+  async getFullData(project_id: string) {
+    const project = this.projectRepository.findFullDataById(project_id);
     if (project) {
       //await project;
       return project;
