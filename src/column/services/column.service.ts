@@ -33,15 +33,21 @@ export class ColumnsService {
     throw new HttpException('Column not found', HttpStatus.NOT_FOUND);
   }
 
-  async createColumn(user: CreateColumnDto) {
-    return await this.columnRepository.create(user);
+  async createColumn(data: CreateColumnDto) {
+    await this.columnRepository.create(data);
+    return await this.columnRepository.getByCondition(null, { _id: 1, title: 1, sort: 1 });
   }
 
   async updateColumn(id: string, data: UpdateColumnDto) {
-    return await this.columnRepository.findByIdAndUpdate(id, data);
+    await this.columnRepository.findByIdAndUpdate(id, data);
+    return await this.columnRepository.getByCondition(
+      { project_id: { $eq: data.project_id } },
+      { _id: 1, title: 1, sort: 1 },
+    );
   }
 
   async deleteColumn(id: string) {
-    return await this.columnRepository.deleteOne(id);
+    await this.columnRepository.deleteOne(id);
+    return await this.columnRepository.getByCondition(null, { _id: 1, title: 1, sort: 1 });
   }
 }

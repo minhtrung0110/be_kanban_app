@@ -31,15 +31,6 @@ export class ColumnsController {
     }
   }
 
-  // @Get(':id')
-  // async getPostById(@Param('id') id: string) {
-  //   try {
-  //     const result: Column = await this.columnsService.getColumnById(id);
-  //     return ApiResponse.success(result);
-  //   } catch (error) {
-  //     return ApiResponse.error(HttpStatus.NOT_FOUND, error.message);
-  //   }
-  // }
   @Get(':id')
   async geColumnById(@Param('id') id: string) {
     try {

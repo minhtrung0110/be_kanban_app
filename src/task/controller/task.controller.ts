@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
 import { TasksService } from '../services/task.service';
 import { CreateTaskDto, UpdateTaskDto } from '../dto/task.dto';
 import { Task } from '../model/task.model';
@@ -23,7 +23,7 @@ export class TasksController {
   @Get()
   async findAll() {
     try {
-      const result: Task[] = await this.tasksService.findAll();
+      const result: Task[] = await this.tasksService.findAllFullKey();
       return ApiResponse.success(result);
     } catch (error) {
       return ApiResponse.error(HttpStatus.NOT_FOUND, error.message);
@@ -51,10 +51,23 @@ export class TasksController {
     }
   }
 
+  @Patch('updateMany')
+  async updateTasks(@Body() updateTasks: Task[]) {
+    try {
+      const result = await this.tasksService.updateTasks(updateTasks);
+      console.log(result);
+      if (result !== false) return ApiResponse.success(result);
+      else return ApiResponse.error(HttpStatus.NOT_FOUND, 'Cannot find tasks to update');
+    } catch (error) {
+      return ApiResponse.error(HttpStatus.FORBIDDEN, error.message);
+    }
+  }
+
   @Delete(':id')
   async delete(@Param('id') id: string) {
     try {
-      const result = await this.tasksService.deleteTask(id);
+      await this.tasksService.deleteTask(id);
+      const result: Task[] = await this.tasksService.findAllFullKey();
       return ApiResponse.success(result);
     } catch (error) {
       return ApiResponse.error(HttpStatus.FORBIDDEN, error.message);

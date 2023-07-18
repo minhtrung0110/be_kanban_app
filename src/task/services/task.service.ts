@@ -11,6 +11,10 @@ export class TasksService {
     return await this.taskRepository.findAll();
   }
 
+  async findAllFullKey(): Promise<Task[]> {
+    return await this.taskRepository.findTasks();
+  }
+
   async getTaskById(task_id: string) {
     const task = this.taskRepository.findTaskById(task_id);
     if (task) {
@@ -20,12 +24,17 @@ export class TasksService {
     throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
   }
 
-  async createTask(user: CreateTaskDto) {
-    return await this.taskRepository.create(user);
+  async createTask(task: CreateTaskDto) {
+    const response = await this.taskRepository.create(task);
+    return response.populate({ path: 'priority', select: 'name' });
   }
 
   async updateTask(id: string, data: UpdateTaskDto) {
-    return await this.taskRepository.findByIdAndUpdate(id, data);
+    return this.taskRepository.update(id, data);
+  }
+
+  async updateTasks(data: Task[]) {
+    return await this.taskRepository.updateTasks(data);
   }
 
   async deleteTask(id: string) {
