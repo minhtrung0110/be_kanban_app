@@ -55,20 +55,25 @@ export class TasksRepository extends BaseRepository<Task> {
     return this.taskModel.countDocuments(filter);
   }
 
+  async createTask(doc): Promise<any> {
+    const createdEntity = new this.taskModel(doc);
+    return await createdEntity.save();
+  }
+
   async update(id: string, data: UpdateTaskDto) {
-    await this.taskModel.findByIdAndUpdate(id, data);
-    return this.taskModel.find().populate([
-      { path: 'column_id', select: '_id title' },
-      {
-        path: 'assignee_user',
-        select: '_id first_name last_name mail avatar',
-      },
-      {
-        path: 'report_user',
-        select: '_id first_name last_name mail avatar',
-      },
-      { path: 'priority', select: 'name' },
-    ]);
+    return await this.taskModel.findByIdAndUpdate(id, data);
+    // return this.taskModel.find().populate([
+    //   { path: 'column_id', select: '_id title' },
+    //   {
+    //     path: 'assignee_user',
+    //     select: '_id first_name last_name mail avatar',
+    //   },
+    //   {
+    //     path: 'report_user',
+    //     select: '_id first_name last_name mail avatar',
+    //   },
+    //   { path: 'priority', select: 'name' },
+    // ]);
   }
 
   async updateTasks(tasksToUpdate: Task[]): Promise<boolean> {

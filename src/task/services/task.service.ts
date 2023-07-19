@@ -25,7 +25,8 @@ export class TasksService {
   }
 
   async createTask(task: CreateTaskDto) {
-    const response = await this.taskRepository.create(task);
+    const { _id, ...data } = task;
+    const response = await this.taskRepository.create(data);
     return response.populate({ path: 'priority', select: 'name' });
   }
 

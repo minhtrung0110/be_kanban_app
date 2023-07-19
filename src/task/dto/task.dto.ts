@@ -4,6 +4,7 @@ import { User } from '../../user/model/user.model';
 import { Priority } from '../../priority/model/priority.model';
 
 export class CreateTaskDto {
+  _id: string;
   @IsNotEmpty()
   project_id: string;
   @IsNotEmpty()

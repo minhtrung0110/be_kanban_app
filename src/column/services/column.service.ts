@@ -8,7 +8,7 @@ export class ColumnsService {
   constructor(private readonly columnRepository: ColumnsRepository) {}
 
   async findAll(): Promise<Column[]> {
-    return await this.columnRepository.findAll();
+    return await this.columnRepository.getByCondition(null, { _id: 1, title: 1, sort: 1 });
   }
 
   // async findByProjectId(projectId: string): Promise<Column[]> {
