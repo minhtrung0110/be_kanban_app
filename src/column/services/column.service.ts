@@ -34,20 +34,20 @@ export class ColumnsService {
   }
 
   async createColumn(data: CreateColumnDto) {
-    await this.columnRepository.create(data);
-    return await this.columnRepository.getByCondition(null, { _id: 1, title: 1, sort: 1 });
+    return await this.columnRepository.create(data);
+    // return await this.columnRepository.getByCondition(null, { _id: 1, title: 1, sort: 1 });
   }
 
   async updateColumn(id: string, data: UpdateColumnDto) {
-    await this.columnRepository.findByIdAndUpdate(id, data);
-    return await this.columnRepository.getByCondition(
-      { project_id: { $eq: data.project_id } },
-      { _id: 1, title: 1, sort: 1 },
-    );
+    return this.columnRepository.findByIdAndUpdate(id, data);
+    // return await this.columnRepository.getByCondition(
+    //   { project_id: { $eq: data.project_id } },
+    //   { _id: 1, title: 1, sort: 1 },
+    // );
   }
 
   async deleteColumn(id: string) {
-    await this.columnRepository.deleteOne(id);
-    return await this.columnRepository.getByCondition(null, { _id: 1, title: 1, sort: 1 });
+    return await this.columnRepository.deleteOne(id);
+    // return await this.columnRepository.getByCondition(null, { _id: 1, title: 1, sort: 1 });
   }
 }
