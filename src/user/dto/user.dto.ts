@@ -7,6 +7,7 @@ export class UserDto {
   @IsNotEmpty() gender: number;
   @IsNotEmpty() status: number;
   @IsNotEmpty() mail: string;
+  @IsNotEmpty() password: string;
   @IsNotEmpty() phone: string;
   @IsNotEmpty() avatar: string;
   @IsNotEmpty() address: string;
@@ -19,6 +20,7 @@ export class CreateUserDto {
   @IsNotEmpty() gender: number;
   @IsNotEmpty() status: number;
   @IsNotEmpty() mail: string;
+  @IsNotEmpty() password: string;
   @IsNotEmpty() phone: string;
   @IsNotEmpty() avatar: string;
   @IsNotEmpty() address: string;
@@ -35,4 +37,9 @@ export class UpdateUserDto {
   phone: string;
   avatar: string;
   address: string;
+}
+
+export class LoginUserDto {
+  @IsNotEmpty() email: string;
+  @IsNotEmpty() password: string;
 }

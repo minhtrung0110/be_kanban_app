@@ -8,6 +8,7 @@ const UserSchema = new Schema(
     gender: Number,
     status: Number,
     mail: String,
+    password: String,
     phone: String,
     avatar: String,
     address: String,
@@ -31,6 +32,7 @@ export interface User extends Document {
   gender: number;
   status: number;
   mail: string;
+  password: string;
   phone: string;
   avatar: string;
   address: string;
