@@ -66,8 +66,7 @@ export class TasksController {
   @Delete(':id')
   async delete(@Param('id') id: string) {
     try {
-      await this.tasksService.deleteTask(id);
-      const result: Task[] = await this.tasksService.findAllFullKey();
+      const result = await this.tasksService.deleteTask(id);
       return ApiResponse.success(result);
     } catch (error) {
       return ApiResponse.error(HttpStatus.FORBIDDEN, error.message);
