@@ -12,14 +12,16 @@ export class BaseRepository<T extends Document> {
     return this.model.findById(id, option);
   }
 
-  // async findByCondition(
-  //   filter,
-  //   field?: any | null,
-  //   option?: any | null,
-  //   populate?: any | null,
-  // ): Promise<T> {
-  //   return this.model.findOne(filter, field, option).populate(populate);
-  // }
+  async findByCondition(
+    filter,
+    field?: any | null,
+    option?: any | null,
+    populate?: any | null,
+  ): Promise<T> {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    return this.model.findOne(filter, field, option).populate(populate);
+  }
 
   async getByCondition(
     filter,
