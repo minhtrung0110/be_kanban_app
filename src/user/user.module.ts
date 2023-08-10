@@ -1,11 +1,15 @@
 // @Global()
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './model/user.model';
 import { UsersController } from './controller/user.controller';
 import { UsersService } from './services/user.service';
 import { UsersRepository } from './repositories/user.repository';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthService } from './services/auth.service';
+import { AuthController } from './controller/auth.controller';
 
 @Module({
   imports: [
@@ -16,9 +20,24 @@ import { UsersRepository } from './repositories/user.repository';
         schema: UserSchema,
       },
     ]),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+      property: 'user',
+      session: false,
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('SECRETKEY'),
+        signOptions: {
+          expiresIn: configService.get('EXPIRESIN'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
   ],
-  controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
-  exports: [UsersService],
+  controllers: [UsersController, AuthController],
+  providers: [UsersService, UsersRepository, AuthService],
+  exports: [UsersService, AuthService],
 })
 export class UserModule {}

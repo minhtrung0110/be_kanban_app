@@ -52,7 +52,64 @@ export class UsersService {
     });
   }
 
+  async update(filter, update) {
+    if (update.refreshToken) {
+      update.refreshToken = await bcrypt.hash(this.reverse(update.refreshToken), 10);
+    }
+    return await this.userRepository.findByConditionAndUpdate(filter, update);
+  }
+
+  async create(userDto: CreateUserDto) {
+    userDto.password = await bcrypt.hash(userDto.password, 10);
+
+    // check exists
+    const userInDb = await this.userRepository.findByCondition({
+      email: userDto.mail,
+    });
+    if (userInDb) {
+      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+    }
+    // await this.sendMail.add(
+    //   'register',
+    //   {
+    //     to: userDto.email,
+    //     name: userDto.name,
+    //   },
+    //   {
+    //     removeOnComplete: true,
+    //   },
+    // );
+    // await this.mailerService.sendMail({
+    //   to: userDto.email,
+    //   subject: 'Welcome to my website',
+    //   template: './welcome',
+    //   context: {
+    //     name: userDto.name,
+    //   },
+    // });
+
+    return await this.userRepository.create(userDto);
+  }
+
+  // async getUserByRefresh(refresh_token, email) {
+  //   const user = await this.findByEmail(email);
+  //   if (!user) {
+  //     throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+  //   }
+  //   const is_equal = await bcrypt.compare(this.reverse(refresh_token), user.refreshToken);
+  //
+  //   if (!is_equal) {
+  //     throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+  //   }
+  //
+  //   return user;
+  // }
+
   // getListUser(): string {
   //   return 'List User Nè Nha!';
   // }
+
+  private reverse(s) {
+    return s.split('').reverse().join('');
+  }
 }
