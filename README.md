@@ -1,33 +1,126 @@
-# KANBAN APP
+# Kanban Workspace API
 
-## NESTJS FRAMEWORK
+![Build](https://img.shields.io/badge/build-local-blue)
+![License](https://img.shields.io/badge/license-UNLICENSED-lightgrey)
+![Node](https://img.shields.io/badge/node-LTS-green)
+![NestJS](https://img.shields.io/badge/framework-NestJS-e0234e)
+![Last Commit](https://img.shields.io/badge/last%20commit-local-lightgrey)
 
-## Database
+## Project Description
+Kanban Workspace API is a backend service for managing kanban-style workspaces. It provides structured endpoints for managing users, projects, columns, tasks, and priorities, with MongoDB persistence via Mongoose. The API is designed for teams or product builders who need a clean, modular backend to power a kanban board UI.
 
-- MongoDB: mongodb://localhost:27017/be_kanban_app
-- Diagram:
-  ![Class Diagram](img/Student-Rtx-Saga.png)
+## Branch Analysis (Current Branches)
+### Branch: `work`
+- **Version 1 (Product Overview):** A NestJS REST API that powers a kanban board by managing projects, columns, tasks, priorities, and users with MongoDB persistence.
+- **Version 2 (Architecture Focus):** A layered, module-based backend with controllers, services, and repositories built on Mongoose schemas and a shared repository abstraction.
+- **Version 3 (Operational View):** Exposes REST endpoints under `/api/v1` on port `8888`, using DTO validation and standardized API responses for consistent client integration.
 
-## Description API
+## Features
+- CRUD operations for users, projects, columns, tasks, and priorities.
+- Task lookups enriched with related user and priority data via Mongoose population.
+- Bulk task updates for re-ordering and column changes.
+- Project lookup with creator information populated.
+- Standardized API responses with status and payload structure.
+- Environment-based MongoDB configuration and CORS enabled globally.
 
-### HTTP CODE
+## Tech Stack
+**Backend**
+- NestJS (TypeScript)
+- Mongoose (MongoDB ODM)
+- class-validator for DTO validation
 
-````
-Dưới đây là một số mã lỗi HTTP phổ biến và ý nghĩa của chúng:
+**Database**
+- MongoDB
 
-200 OK: Yêu cầu thành công và phản hồi chứa thông tin được yêu cầu.
+**Tooling**
+- Jest for unit/e2e tests
+- ESLint + Prettier for linting/formatting
 
-201 Created: Yêu cầu đã được thực hiện thành công và một tài nguyên mới đã được tạo.
+## Project Architecture
+- **Style:** Modular, layered NestJS application.
+- **Layers:**
+  - Controllers: REST endpoints and HTTP response handling.
+  - Services: business logic.
+  - Repositories: database access with a shared base repository.
+  - Models: Mongoose schemas and TypeScript interfaces.
 
-400 Bad Request: Yêu cầu không hợp lệ do cú pháp sai, tham số thiếu hoặc không hợp lệ.
+```
+src/
+  app.module.ts        # Root module wiring
+  common/              # Shared response types
+  base.repository.ts   # Generic Mongo repository abstraction
+  user/                # User module (controller/service/repo/model/dto)
+  project/             # Project module
+  column/              # Column module
+  task/                # Task module
+  priority/            # Priority module
+```
 
-401 Unauthorized: Yêu cầu yêu cầu xác thực. Người dùng chưa được xác thực hoặc thông tin đăng nhập không hợp lệ.
+## Folder Structure
+- `src/`: Application source code.
+  - `app.module.ts`, `main.ts`: Application bootstrap and module wiring.
+  - `common/response/`: API response and pagination helpers.
+  - `base.repository.ts`: Shared data access helpers.
+  - `user/`, `project/`, `column/`, `task/`, `priority/`: Feature modules with controllers, services, repositories, DTOs, and models.
+- `test/`: Jest e2e tests and configuration.
+- `img/`: Documentation assets (e.g., class diagram).
 
-403 Forbidden: Yêu cầu bị từ chối. Máy chủ hiểu yêu cầu, nhưng từ chối thực hiện hành động được yêu cầu. Thường là do quyền truy cập bị giới hạn.
+## Installation & Setup
+### Prerequisites
+- Node.js (LTS recommended)
+- MongoDB instance
 
-404 Not Found: Tài nguyên yêu cầu không tồn tại trên máy chủ.
+### Install Dependencies
+```bash
+npm install
+```
 
-500 Internal Server Error: Lỗi máy chủ nội bộ. Máy chủ gặp sự cố không xử lý được yêu cầu.
+## Environment Variables
+Create a `.env` file in the project root:
+```bash
+MONGODB_URL=mongodb://localhost:27017/be_kanban_app
+```
 
-503 Service Unavailable: Máy chủ không thể xử lý yêu cầu tại thời điểm đó. Thường được sử dụng khi máy chủ tạm thời bị quá tải hoặc đang bảo trì.
-````
+## Running the Project
+### Development
+```bash
+npm run start:dev
+```
+
+### Production Build
+```bash
+npm run build
+npm run start:prod
+```
+
+The API starts on `http://localhost:8888` with a global prefix of `/api/v1`.
+
+## Scripts
+- `npm run start`: Start NestJS server.
+- `npm run start:dev`: Start in watch mode.
+- `npm run start:debug`: Debug mode with watch.
+- `npm run build`: Build TypeScript to `dist/`.
+- `npm run lint`: Lint and auto-fix TypeScript files.
+- `npm run format`: Format code with Prettier.
+- `npm run test`: Run unit tests.
+- `npm run test:e2e`: Run e2e tests.
+- `npm run test:cov`: Run tests with coverage.
+
+## Roadmap
+- Add authentication/authorization for protected endpoints.
+- Expand project aggregation endpoints to return full board state.
+- Add pagination and filtering on list endpoints.
+
+## Contribution Guidelines
+1. Fork the repository and create a feature branch.
+2. Follow the existing NestJS module structure and DTO validation patterns.
+3. Run `npm run lint` and `npm run test` before submitting.
+
+## License
+UNLICENSED (MIT recommended if you plan to open source this project).
+
+## Author
+Author: Nguyen Duc Minh Trung  
+Email: minhtrung4367@gmail.com  
+LinkedIn: https://www.linkedin.com/in/minhtrung0110/  
+Phone: +84 707 624 367  
